@@ -1,5 +1,6 @@
-import type { GetServerSideProps, NextPage } from 'next'
+import type { GetStaticProps, NextPage } from 'next'
 import Image from 'next/future/image'
+
 import Stripe from 'stripe'
 import { stripe } from '../lib/stripe'
 
@@ -43,11 +44,10 @@ const Home: NextPage<HomeProps> = ({ products }) => {
 
 export default Home
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const response = await stripe.products.list({
     expand: ['data.default_price']
   })
-
 
   const products = response.data.map(product => {
     const price = product.default_price as Stripe.Price
@@ -63,6 +63,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return {
     props: {
       products
-    }
+    },
+    revalidate: 60 * 60 * 2, // 2 hours
   }
 }
