@@ -1,6 +1,7 @@
 import axios from 'axios'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Image from 'next/future/image'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
@@ -47,21 +48,27 @@ const Product: NextPage<ProductProps> = ({ product }) => {
   }
 
   return (
-    <S.ProductContainer>
-      <S.ImageContainer>
-        <Image src={product.imageUrl} width={520} height={480} alt='' />
-      </S.ImageContainer>
+    <>
+      <Head>
+        <title>{product.name} | Ignite Shop</title>
+      </Head>
 
-      <S.ProductDetails>
-        <h1>{product.name}</h1>
-        <span>{product.price}</span>
-        <p>{product.description}</p>
+      <S.ProductContainer>
+        <S.ImageContainer>
+          <Image src={product.imageUrl} width={520} height={480} alt='' />
+        </S.ImageContainer>
 
-        <button onClick={handleBuyProduct} disabled={isCreatingCheckoutSession}>
-          Comprar agora
-        </button>
-      </S.ProductDetails>
-    </S.ProductContainer>
+        <S.ProductDetails>
+          <h1>{product.name}</h1>
+          <span>{product.price}</span>
+          <p>{product.description}</p>
+
+          <button onClick={handleBuyProduct} disabled={isCreatingCheckoutSession}>
+            Comprar agora
+          </button>
+        </S.ProductDetails>
+      </S.ProductContainer>
+    </>
   )
 }
 
